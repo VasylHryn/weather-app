@@ -6,9 +6,9 @@
     <title>Vue.js в Laravel с Vite</title>
     @vite(['resources/js/app.js', 'resources/css/app.css'])
 </head>
-<body>
-    <div id="app">
-        <example-component></example-component>
+<body class="">
+    <div id="app" class="flex justify-center pt-16">
+        <weather-app></weather-app>
     </div>
 </body>
 </html>

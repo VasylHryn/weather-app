@@ -1,10 +1,11 @@
 import '../css/app.css';
 import './bootstrap';
 import { createApp } from 'vue';
-import ExampleComponent from './components/ExampleComponent.vue';
+import ExampleComponent from './Components/WeatherApp.vue';
 import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy';
+import WeatherApp from "@/Components/WeatherApp.vue";
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
@@ -27,5 +28,5 @@ createInertiaApp({
 });
 
 const app = createApp({});
-app.component('example-component', ExampleComponent);
+app.component('weather-app', WeatherApp);
 app.mount('#app');
