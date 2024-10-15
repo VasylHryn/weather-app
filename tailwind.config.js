@@ -19,6 +19,7 @@ export default {
                 '128': '32rem'
             }
         },
+
     },
 
     plugins: [forms],
