@@ -64,6 +64,18 @@
 <script>
 export default {
     name: 'WeatherApp',
+    mounted() {
+        this.fetchData()
+    },
+    methods: {
+        fetchData() {
+            fetch('https://api.openweathermap.org/data/2.5/weather?lat=51&lon=31&appid=6797d80bdc80bc94af12bb667ded7b2d')
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data)
+                })
+        }
+    }
 };
 </script>
 
