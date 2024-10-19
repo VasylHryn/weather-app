@@ -64,20 +64,32 @@
 <script>
 export default {
     name: 'WeatherApp',
+    data() {
+        return {
+            weather: null, // Переменная для хранения данных о погоде
+        };
+    },
     mounted() {
-        this.fetchData()
+        this.fetchData();
     },
     methods: {
-        fetchData() {
-            fetch('https://api.openweathermap.org/data/2.5/weather?lat=51&lon=31&appid=6797d80bdc80bc94af12bb667ded7b2d')
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data)
-                })
+        async fetchData() {
+            try {
+                const response = await fetch('/weather'); // Запрос к вашему бэкенду
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                this.weather = data; // Сохраняем данные о погоде в переменную
+                console.log(this.weather); // Выводим данные в консоль
+            } catch (error) {
+                console.error('Ошибка при получении данных о погоде:', error);
+            }
         }
     }
 };
 </script>
+
 
 <style scoped>
 /* Ваши стили здесь */

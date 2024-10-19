@@ -30,3 +30,4 @@ createInertiaApp({
 const app = createApp({});
 app.component('weather-app', WeatherApp);
 app.mount('#app');
+
