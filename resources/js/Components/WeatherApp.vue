@@ -1,9 +1,10 @@
 <template>
     <div class="text-white mb-8">
         <div class="places-input text-gray-800">
-            <input type="text" class="w-full" />
+            <input type="text" v-model="location.name" class="w-full" placeholder="Enter city name" />
         </div>
         <div class="weather-container font-sans w-128 max-w-lg rounded-3xl overflow-hidden bg-gray-900 shadow-lg mt-4">
+            <!-- Current Weather Section -->
             <div class="current-weather flex items-center justify-between px-6 py-8">
                 <div class="flex items-center">
                     <div>
@@ -15,28 +16,24 @@
                         <div>{{ location.name }}</div>
                     </div>
                 </div>
-                <i :class="currentTemperature.icon" class="weather-icon w-24 h-9"></i> <!-- Здесь -->
-            </div> <!-- end current weather -->
+                <i :class="currentTemperature.icon" class="weather-icon w-24 h-9"></i>
+            </div>
 
+            <!-- Future Weather Section -->
             <div class="future-weather text-sm bg-gray-800 px-6 py-8 overflow-hidden">
-                <div
-                    v-for="(day, index) in daily"
-                    :key="index"
-                    class="flex items-center"
-                    :class="{ 'mt-8': index > 0 }"
-                >
-                    <div class="w-1/6 text-lg text-gray-200">{{ day.time }}</div>
-                    <div class="w-4/6 px-4 flex items-center">
-                        <i :class="day.icon"></i>
-                        <div class="ml-3">{{ day.summary }}</div>
+                <h2 class="text-xl font-semibold mb-4">5-Day Forecast</h2>
+                <div v-for="(day, index) in daily" :key="index" class="future-day flex items-center justify-between py-2 border-b border-gray-600">
+                    <div class="day-name flex items-center">
+                        <div class="mx-3">{{ day.date }}</div>
+                        <i :class="day.icon" class="weather-icon w-12 h-12"></i>
                     </div>
-                    <div class="w-1/6 text-right">
-                        <div>{{ Math.round(day.temperatureHigh) }}°C</div>
-                        <div>{{ Math.round(day.temperatureLow) }}°C</div>
+                    <div class="flex flex-col items-end">
+                        <div class="temp text-lg font-semibold">{{ day.temp }}°C</div>
+                        <div class="summary text-xs">{{ day.summary }}</div>
                     </div>
                 </div>
-            </div> <!-- end future weather -->
-        </div> <!-- end weather container -->
+            </div>
+        </div>
     </div>
 </template>
 
@@ -74,11 +71,12 @@ export default {
                 const data = await response.json();
                 this.weather = data;
 
+                console.log('Full weather data:', data);
 
+                // Current weather
                 this.currentTemperature.actual = Math.round(data.main.temp - 273.15);
                 this.currentTemperature.feels = Math.round(data.main.feels_like - 273.15);
                 this.currentTemperature.summary = data.weather[0].main;
-
 
                 const weatherIconMap = {
                     "Clear": "fas fa-sun",
@@ -90,27 +88,27 @@ export default {
                 };
                 this.currentTemperature.icon = weatherIconMap[data.weather[0].main] || "wi wi-na";
 
-
-                this.daily = data.daily.map(day => ({
-                    time: new Date(day.dt * 1000).toLocaleDateString("en-US", { weekday: 'short' }),
+                // Future weather (daily forecast)
+                this.daily = data.daily.map((day) => ({
+                    date: new Date(day.dt * 1000).toLocaleDateString('en-US', {weekday: 'long'}),
+                    temp: Math.round(day.temp.day - 273.15),
                     summary: day.weather[0].main,
-                    temperatureHigh: day.temp.max - 273.15,
-                    temperatureLow: day.temp.min - 273.15,
-                    icon: weatherIconMap[day.weather[0].main] || "wi wi-na"
+                    icon: weatherIconMap[day.weather[0].main] || "wi wi-na",
                 }));
-                console.log(data);
+
+                console.log('Current Temperature:', this.currentTemperature);
+                console.log('Daily Forecast:', this.daily);
             } catch (error) {
-                console.error('Ошибка при получении данных о погоде:', error);
+                console.error('Error fetching weather data:', error);
             }
         }
     }
 };
 </script>
 
-
 <style scoped>
 .weather-icon {
-  font-size: 50px;
-     margin-left: -30px;
+    font-size: 50px;
+    margin-left: -30px;
 }
 </style>
