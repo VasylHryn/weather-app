@@ -27,15 +27,24 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
 Route::get('/weather', function () {
+    $lat = request('lat'); // Получаем значение широты из запроса
+    $lon = request('lon'); // Получаем значение долготы из запроса
+
+
+    if (!$lat || !$lon) {
+        return response()->json(['error' => 'Latitude and longitude are required.'], 400);
+    }
+
     $client = new Client();
     $response = $client->get('https://api.openweathermap.org/data/2.5/weather', [
         'query' => [
-            'lat' => 51.4982,
-            'lon' => 31.2893,
-            'appid' => env('WEATHER_API_KEY'), // Используем API-ключ из .env файла
+            'lat' => $lat,
+            'lon' => $lon,
+            'appid' => env('WEATHER_API_KEY'),
         ],
-        'verify' => false, // Отключаем проверку SSL-сертификата
+        'verify' => false,
     ]);
 
     $data = json_decode($response->getBody(), true);
