@@ -15,9 +15,9 @@ This is a weather forecast application currently under development, built using 
 
 ## Technologies Used
 
-- **Frontend**: Vue.js, Tailwind CSS
-- **Backend**: Laravel
-- **API**: OpenWeather API
+- **Frontend**: Vue.js, Tailwind CSS.
+- **Backend**: Laravel.
+- **API**: OpenWeather API.
 
 ## Getting Started
 
